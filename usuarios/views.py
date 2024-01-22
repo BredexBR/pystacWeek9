@@ -35,9 +35,9 @@ def cadastro(request):
                 password=confirmar_senha,
             )
             messages.add_message(
-                request, constants.ERROR, 'Usuário cadastrado com sucesso.'
+                request, constants.SUCCESS, 'Usuário cadastrado com sucesso.'
             )
-            return redirect('/usuarios/login')
+            return redirect('/usuarios/logar')
         
         except:
             messages.add_message(
@@ -61,8 +61,8 @@ def logar(request):
             messages.add_message(
                 request, constants.ERROR, 'Username ou senha inválidos'
             )
-            return redirect('/usuarios/login')
+            return redirect('/usuarios/logar')
 
 def logout(request):
     auth.logout(request)
-    return redirect('/usuarios/login')
+    return redirect('/usuarios/logar')
