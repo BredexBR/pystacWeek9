@@ -69,14 +69,11 @@
                                 <td><span class="badge bg-danger">{{desafio.get_dificuldade_display}}</span></td> 
                             {% endif %}
 
-                            {% for flash in desafio.flashcards.all %}
-                                {% if flash.respondido %}
-                                    <td><span class="badge bg-success">Finalizado</span></td>                                
-                                {% endif %}
-                            {% endfor %}   
-                            
-                            <td><span class="badge bg-primary">Em aberto</span></td>
-                            
+                            {% if desafio.status %}
+                                <td><span class="badge bg-success">Concluído</span></td>                                                        
+                            {% else %}
+                                <td><span class="badge bg-warning">Pendente</span></td> 
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 </tbody>

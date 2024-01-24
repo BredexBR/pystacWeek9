@@ -71,7 +71,7 @@ def deletar_flashcard(request, id):
             )
             return redirect('/flashcard/novo_flashcard')
         else:
-            print("flashcardUser" , flashcard.user)
+            print("flashcardUser" , flashcard.user) 
             flashcard.delete()
             messages.add_message(
                 request, constants.SUCCESS, 'Flashcard deletado com sucesso!'
@@ -161,13 +161,6 @@ def listar_desafio(request):
     if dificuldade_filtrar:
         desafios = Desafio.objects.filter(dificuldade=dificuldade_filtrar)
 
-    #respondido = []
-    #flashcards = []
-    #for desafio in desafios:
-    #    respondido.append(desafio.flashcards.filter(respondido = True).count())
-    
-    #print(f"respondido: {respondido}")
-
     return render(
         request,
         'listar_desafio.html',
@@ -175,7 +168,6 @@ def listar_desafio(request):
             'desafios': desafios,
             'categorias': categorias,
             'dificuldades': dificuldades
-    #        'respondido': respondido
         },
     )
 
@@ -211,6 +203,17 @@ def responder_flashcard(request, id):
     flashcard_desafio.respondido = True
     flashcard_desafio.acertou = True if acertou == '1' else False # flashcard é true se a variavel acertou é igual a 1 se não é falso
     flashcard_desafio.save()
+
+    desafio = Desafio.objects.get(id=desafio_id)
+    desafio_flashcards = desafio.flashcards.all().count()
+    desafio_flashcards_respondidos = desafio.flashcards.filter(
+        respondido=True
+    ).count()
+
+    if desafio_flashcards_respondidos == desafio_flashcards:
+        desafio.status = True
+        desafio.save()
+
     return redirect(f'/flashcard/desafio/{desafio_id}/')
 
 def relatorio(request, id):
@@ -227,8 +230,22 @@ def relatorio(request, id):
     dados2 = []
     for categoria in categorias:
         dados2.append(desafio.flashcards.filter(flashcard__categoria=categoria).filter(acertou=True).count())
-
-    #TODO Fazer o ranking(olhar no figma)
-
+        
+    resultados_por_categoria = {}
+    for categoria in categorias:
+        resultados_por_categoria[f"{categoria}"] = {
+            "acertos": (
+                desafio.flashcards.filter(flashcard__categoria=categoria)
+                .filter(acertou=True)
+                .count()
+            )
+        }
+        resultados_por_categoria[f"{categoria}"]["erros"] = (
+            desafio.flashcards.filter(flashcard__categoria=categoria)
+            .filter(acertou=False)
+            .count()
+        )
+    
     return render(request, 'relatorio.html', {'desafio': desafio, 'dados': dados, 
-                                              'categorias': name_categoria, 'dados2': dados2,},)
+                                              'categorias': name_categoria, 'dados2': dados2,                                              
+                                              "resultados_por_categoria": resultados_por_categoria,},)

@@ -48,6 +48,7 @@ class Desafio(models.Model):
         max_length=1, choices=Flashcard.DIFICULDADE_CHOICES
     )
     flashcards = models.ManyToManyField(FlashcardDesafio)
+    status = models.BooleanField(default=False)
 
     def __str__(self):
         return self.titulo

@@ -3,7 +3,7 @@
 ## Introdução
 O projeto a seguir se trata de um código desenvolvido a partir de um evento "Pystack week 9.0". No mesmo o fundamento principal abordado é a linguagem de programação "Python" com o framework "Django".
 
-No momento se trata de um código com cadastro de usuários e inicio da criação de flashcards.
+No programa é possível fazer cadastro de login, entrar com um usuário e criar flashcards para estudos, iniciar desafios com os flashcards cadastrados para responde-los, estatísticas em forma de relatório com os acertos e erros. E iniciar apostilas de estudos dentro da plataforma. 
 
 ## Bibliotecas/Ferramentas
 Foram necessário baixar algumas bibliotecas:
