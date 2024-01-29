@@ -21,8 +21,20 @@
         <div class="row">
             <div class="col-md">
                 <h3 class="fonte-secundaria" >Desafio iniciado</h3>
-                <span class="badge-categoria">Programação</span>
-                <span class="badge-categoria" >Matemática</span>
+                
+                {% for categoria in categorias %}
+                    <span class="badge-categoria">{{categoria}}</span>
+                {% endfor %}
+                
+                {% for dificuldade in dificuldades %}
+                    {% if dificuldade == "F" %}
+                        <span class="badge bg-success">Fácil</span>
+                    {% elif  dificuldade == "M" %}
+                        <span class="badge bg-warning">Médio</span>
+                    {% elif  dificuldade == "D" %}
+                        <span class="badge bg-danger">Difícil</span>
+                    {% endif %}
+                {% endfor %}
                 <br>
                 <br>
                 <br>

@@ -8,10 +8,10 @@
     <link href="{% static 'flashcard/css/iniciar_desafio.css' %}" rel="stylesheet">
     <link href="{% static 'flashcard/css/desafio.css' %}" rel="stylesheet">
     <link href="{% static 'apostilas/css/adicionar_apostilas.css' %}" rel="stylesheet">
+    <link href="{% static 'apostilas/css/apostila.css' %}" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 {% endblock 'cabecalho' %}
-
 
 {% block 'conteudo' %}
     {% include "partials/header.html" %}
@@ -24,8 +24,15 @@
 
             </div>
             <div class="col-md">
-                <p>Views únicas: {{views_unicas}}</p>
-                <p>Views totais: {{views_totais}}</p>
+                <p class="badge-categoria">Views únicas: {{views_unicas}}</p>
+                <p class="badge-categoria">Views totais: {{views_totais}}</p>
+                <hr>
+                <p class="fonte-secundaria">Deixe sua avaliação</p>
+                <select name="avaliacao" id="" class="form-select">
+                    <option value=""></option>
+                    <option value="0">Bom</option>
+                    <option value="1">Ruim</option
+                </select>
             </div>
         </div>
     </div>

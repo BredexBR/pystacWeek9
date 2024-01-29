@@ -107,44 +107,44 @@ def iniciar_desafio(request):
                 'Preencha os campos de titulo, categoria, dificuldade e Qtd questões.',
             )
             return redirect('/flashcard/iniciar_desafio/')
-
-        desafio = Desafio(
-            user=request.user,
-            titulo=titulo,
-            quantidade_perguntas=qtd_perguntas,
-            dificuldade=dificuldade,
-        )
-        desafio.save()
-
-        for categoria in categorias:
-            desafio.categoria.add(categoria)
-
-        flashcards = (
-            Flashcard.objects.filter(user=request.user)
-            .filter(dificuldade=dificuldade)
-            .filter(categoria_id__in=categorias) # lista de id de categorias dentro de categorias
-            .order_by('?')
-        )
-
-        if flashcards.count() < int(qtd_perguntas):
-            messages.add_message(
-                request, constants.ERROR, f"Só existem {flashcards.count()} flashcards para"
-                f" esta categoria e dificuldade. Não será possível adicionar as {qtd_perguntas} perguntas."
+        else:
+            desafio = Desafio(
+                user=request.user,
+                titulo=titulo,
+                quantidade_perguntas=qtd_perguntas,
+                dificuldade=dificuldade,
             )
-            return redirect('/flashcard/iniciar_desafio/')
+            desafio.save()
 
-        flashcards = flashcards[: int(qtd_perguntas)]
+            for categoria in categorias:
+                desafio.categoria.add(categoria)
 
-        for f in flashcards:
-            flashcard_desafio = FlashcardDesafio(
-                flashcard=f,
+            flashcards = (
+                Flashcard.objects.filter(user=request.user)
+                .filter(dificuldade=dificuldade)
+                .filter(categoria_id__in=categorias) # lista de id de categorias dentro de categorias
+                .order_by('?')
             )
-            flashcard_desafio.save()
-            desafio.flashcards.add(flashcard_desafio)
 
-        desafio.save()
-        #return HttpResponse("teste")
-        return redirect(f'/flashcard/desafio/{desafio.id}')
+            if flashcards.count() < int(qtd_perguntas):
+                messages.add_message(
+                    request, constants.ERROR, f"Só existem {flashcards.count()} flashcards para"
+                    f" esta categoria e dificuldade. Não será possível adicionar as {qtd_perguntas} perguntas."
+                )
+                return redirect('/flashcard/iniciar_desafio/')
+
+            flashcards = flashcards[: int(qtd_perguntas)]
+
+            for f in flashcards:
+                flashcard_desafio = FlashcardDesafio(
+                    flashcard=f,
+                )
+                flashcard_desafio.save()
+                desafio.flashcards.add(flashcard_desafio)
+
+            desafio.save()
+            #return HttpResponse("teste")
+            return redirect(f'/flashcard/desafio/{desafio.id}')
 
 def listar_desafio(request):
     desafios = Desafio.objects.filter(user=request.user)
@@ -181,6 +181,10 @@ def desafio(request, id):
         acertos = desafio.flashcards.filter(respondido=True).filter(acertou=True).count()
         erros = desafio.flashcards.filter(respondido=True).filter(acertou=False).count()
         faltantes = desafio.flashcards.filter(respondido=False).count()
+        categorias = desafio.categoria.all()
+        name_categoria = [i.nome for i in categorias]
+        dificuldades = desafio.dificuldade
+
         return render(
             request,
             'desafio.html',
@@ -189,6 +193,8 @@ def desafio(request, id):
                 'acertos': acertos,
                 'erros': erros,
                 'faltantes': faltantes,
+                'categorias': name_categoria,
+                'dificuldades': dificuldades,
             },
         )
 

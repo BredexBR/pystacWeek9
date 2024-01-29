@@ -60,7 +60,7 @@ def logar(request):
         else:
             messages.add_message(
                 request, constants.ERROR, 'Username ou senha inválidos'
-            )
+            ) 
             return redirect('/usuarios/logar')
 
 def logout(request):
