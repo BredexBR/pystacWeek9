@@ -97,7 +97,7 @@
 
                 <br>
                 <br>
-               
+                <div class="scrollable-div box-listar">
                 {% for flash in flashcards %}
                     <div class="box-new-flashcard"  onclick="flip_card({{flash.id}})">
                         <div class="flashcard {{flash.css_dificuldade}}">
@@ -121,7 +121,7 @@
                     <br>
                     <br>
                 {% endfor %}
-
+                </div>
             </div>
         </div>
     </div>

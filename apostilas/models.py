@@ -6,7 +6,6 @@ class Apostila(models.Model):
     titulo = models.CharField(max_length=100)
     arquivo = models.FileField(upload_to='apostilas')
 
-
     def __str__(self):
         return self.titulo
     

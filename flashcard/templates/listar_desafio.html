@@ -7,6 +7,7 @@
     <link href="{% static 'flashcard/css/novo_flashcard.css' %}" rel="stylesheet">
     <link href="{% static 'flashcard/css/iniciar_desafio.css' %}" rel="stylesheet">
     <link href="{% static 'flashcard/css/desafio.css' %}" rel="stylesheet">
+    <link href="{% static 'apostila/css/apostila.css' %}" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 {% endblock 'cabecalho' %}
@@ -43,15 +44,25 @@
                 </form>
             </div>
         </div>
+
+        {% if messages %}
+            <br>
+            {% for message in messages %}
+                <section class="alert {{message.tags}}">
+                    {{message}}
+                </section>
+            {% endfor %}
+        {% endif %}
+        
         <br>
         <br>
-        <div class="box-listar">
+        <div class="box-listar scrollable-div">  
             <table>
                 <thead>
                   <tr>
                     <th scope="col">Desafio</th>
                     <th scope="col">Titulo</th>
-                    <th scope="col">Dificuldade</th>
+                    <th scope="col">Dificuldade</th> 
                     <th scope="col">Status</th>
                   </tr>
                 </thead>
@@ -70,10 +81,11 @@
                             {% endif %}
 
                             {% if desafio.status %}
-                                <td><span class="badge bg-success">Concluído</span></td>                                                        
+                                <td><span class="badge bg-success">Concluído</span>
                             {% else %}
-                                <td><span class="badge bg-warning">Pendente</span></td> 
+                                <td><span class="badge bg-warning">Pendente</span>
                             {% endif %}
+                                <a href="{% url 'deletar_desafio' desafio.id %}"><i class='icone-exit bx bx-x-circle'></i></a></td>
                         </tr>
                     {% endfor %}
                 </tbody>

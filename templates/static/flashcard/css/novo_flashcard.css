@@ -55,3 +55,20 @@
     font-size: 25px;
     color: orangered;
 }
+
+.scrollable-div {
+    max-height: 362px;
+    overflow-y: auto;
+}
+
+.scrollable-div::-webkit-scrollbar { 
+    width: 15px; 
+}
+
+.scrollable-div::-webkit-scrollbar-thumb { 
+    background-color: #808080; 
+}
+
+.scrollable-div::-webkit-scrollbar-thumb { 
+    border-radius: 5px; 
+}
