@@ -5,6 +5,7 @@ class Apostila(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     titulo = models.CharField(max_length=100)
     arquivo = models.FileField(upload_to='apostilas')
+    avaliacao = models.CharField(max_length=1, default="0")
 
     def __str__(self):
         return self.titulo

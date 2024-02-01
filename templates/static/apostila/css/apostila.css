@@ -14,3 +14,21 @@
 .scrollable-div::-webkit-scrollbar-thumb { 
     border-radius: 5px; 
 }
+
+.marginText{
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 200px !important;
+}
+
+.btn-apostila{
+    background-color: #58fcd5;
+    border: none;
+    border: 1px solid #58fcd5;
+    font-size: 18px;
+    font-weight: bold;
+    padding-left: 25px;
+    padding-right: 25px;
+    display: block; 
+    margin-top:20px;
+}

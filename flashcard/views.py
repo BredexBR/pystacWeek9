@@ -231,16 +231,22 @@ def desafio(request, id):
             )
 
 def deletar_desafio(request, id):
-    desafio = Desafio.objects.get(id=id)
-    
-    if not desafio.user == request.user:
-            raise Http404()
-    
-    desafio.delete()
-    messages.add_message(
-       request, constants.SUCCESS, 'Desafio deletado com sucesso!'
-    )
-    return redirect('/flashcard/listar_desafio') 
+    if not request.user.is_authenticated:
+        messages.add_message(
+            request, constants.ERROR, 'Usuário não autenticado, sera necessário fazer login novamente.'
+        )
+        return redirect('/usuarios/logar')
+    else:
+        desafio = Desafio.objects.get(id=id)
+        
+        if not desafio.user == request.user:
+                raise Http404()
+        
+        desafio.delete()
+        messages.add_message(
+        request, constants.SUCCESS, 'Desafio deletado com sucesso!'
+        )
+        return redirect('/flashcard/listar_desafio') 
 
 def responder_flashcard(request, id):
     if not request.user.is_authenticated:

@@ -20,7 +20,12 @@ def adicionar_apostilas(request):
             titulo = request.POST.get('titulo')
             arquivo = request.FILES['arquivo']
 
-            apostila = Apostila(user=request.user, titulo=titulo, arquivo=arquivo)
+            apostila = Apostila(
+                user=request.user, 
+                titulo=titulo, 
+                arquivo=arquivo
+            )
+
             apostila.save()
             messages.add_message(
                 request, constants.SUCCESS, 'Apostila adicionada com sucesso.'
@@ -34,28 +39,44 @@ def apostila(request, id):
         )
         return redirect('/usuarios/logar')
     
-    else:
+    else:        
         apostila = Apostila.objects.get(id=id)
         views_unicas = ViewApostila.objects.filter(apostila=apostila).values('ip').distinct().count()
         views_totais = ViewApostila.objects.filter(apostila=apostila).count()
 
-        view = ViewApostila(
-            ip=request.META['REMOTE_ADDR'], #Essa função retorna o ip do usuário que esta utilizando a função
-            apostila=apostila
-        )
-        view.save()
-        return render(request, 'apostila.html', {'apostila': apostila, 
-                                                'views_unicas': views_unicas, 
-                                                'views_totais': views_totais})
+        if request.method == 'GET':
+            view = ViewApostila(
+                ip=request.META['REMOTE_ADDR'], #Essa função retorna o ip do usuário que esta utilizando a função
+                apostila=apostila
+            )
+            view.save()
+            return render(request, 'apostila.html', {'apostila': apostila, 
+                                                    'views_unicas': views_unicas, 
+                                                    'views_totais': views_totais})
+        
+        elif request.method == 'POST':
+            avalie = request.POST.get('avalie')
+            apostila.avaliacao = avalie
+            apostila.save()
+
+            return render(request, 'apostila.html', {'apostila': apostila, 
+                                                    'views_unicas': views_unicas, 
+                                                    'views_totais': views_totais})
 
 def deletar_apostila(request, id):
-    apostila = Apostila.objects.get(id=id)
-    
-    if not apostila.user == request.user:
-            raise Http404()
-    
-    apostila.delete()
-    messages.add_message(
-       request, constants.SUCCESS, 'Desafio deletado com sucesso!'
-    )
-    return redirect('/apostilas/adicionar_apostilas') 
+    if not request.user.is_authenticated:
+        messages.add_message(
+            request, constants.ERROR, 'Usuário não autenticado, sera necessário fazer login novamente.'
+        )
+        return redirect('/usuarios/logar')
+    else:
+        apostila = Apostila.objects.get(id=id)
+        
+        if not apostila.user == request.user:
+                raise Http404()
+        
+        apostila.delete()
+        messages.add_message(
+        request, constants.SUCCESS, 'Desafio deletado com sucesso!'
+        )
+        return redirect() 
