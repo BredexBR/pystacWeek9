@@ -77,6 +77,6 @@ def deletar_apostila(request, id):
         
         apostila.delete()
         messages.add_message(
-        request, constants.SUCCESS, 'Desafio deletado com sucesso!'
+        request, constants.SUCCESS, 'Apostila deletada com sucesso!'
         )
-        return redirect() 
+        return redirect('/apostilas/adicionar_apostilas/') 
